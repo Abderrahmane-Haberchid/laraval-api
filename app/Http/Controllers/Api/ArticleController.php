@@ -12,7 +12,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        return ArticleResource::collection(Article::all());
     }
 
     /**
@@ -20,7 +20,17 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        ]);
+
+        
+        $article = Article::create($validated);
+
+        
+        return new ArticleResource($article)->response()->setStatusCode(201);
     }
 
     /**
